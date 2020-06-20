@@ -52,7 +52,6 @@ defmodule Cldr.Calendars.Composite.MixProject do
       links: links(),
       files: [
         "lib",
-        "config",
         "mix.exs",
         "README*",
         "CHANGELOG*",
