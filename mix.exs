@@ -8,7 +8,7 @@ defmodule Cldr.Calendars.Composite.MixProject do
       app: :cldr_calendars_composite,
       version: @version,
       elixir: "~> 1.8",
-      name: "Cldr Composite Calendar",
+      name: "Cldr Composite Calendars",
       source_url: "https://github.com/elixir-cldr/cldr_calendars_composite",
       docs: docs(),
       description: description(),
@@ -18,7 +18,7 @@ defmodule Cldr.Calendars.Composite.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       dialyzer: [
         ignore_warnings: ".dialyzer_ignore_warnings",
-        plt_add_apps: ~w(calendar_interval)a
+        plt_add_apps: ~w()a
       ]
     ]
   end
@@ -39,7 +39,6 @@ defmodule Cldr.Calendars.Composite.MixProject do
   defp deps do
     [
       {:ex_cldr_calendars, "~> 1.0"},
-      {:ex_cldr_calendars_coptic, "~> 0.1", only: [:dev, :test]},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true},
       {:ex_doc, "~> 0.21", only: [:release, :dev]},
