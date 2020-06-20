@@ -11,14 +11,17 @@ defmodule Cldr.Calendar.Composite.Config do
   # Prepends an origin date in a base calendar. THe default
   # base calendar is `Cldr.Calendar.Julian`.
 
-  def extract_options([]) do
-    {:error, :no_calendars_configured}
-  end
+  # def extract_options([]) do
+  #   {:error, :no_calendars_configured}
+  # end
 
-  def extract_options(options) do
-    {default_base_date, _} = Code.eval_quoted(@default_base_date)
+  def extract_options(options) when is_list(options) do
+    {:%{}, [], [__struct__: Date, calendar: calendar, day: day, month: month, year: year]} =
+      @default_base_date
+
+    {:ok, default_base_date} = Date.new(year, month, day, calendar)
     base_calendar = Keyword.get(options, :base_calendar, @default_base_calendar)
-    base_transition = Map.put(default_base_date, :calendar, base_calendar)
+    base_transition = %{default_base_date | calendar: base_calendar}
 
     options
     |> Keyword.get(:calendars)

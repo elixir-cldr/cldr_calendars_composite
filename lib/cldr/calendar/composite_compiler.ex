@@ -152,11 +152,10 @@ defmodule Cldr.Calendar.Composite.Compiler do
       It is an integer from 1 to 5.
 
       """
-      @spec week_of_month(year, Cldr.Calendar.week(), day) :: {month, Cldr.Calendar.week()}
+      @spec week_of_month(year, Cldr.Calendar.week(), day) :: {:error, :not_defined}
       @impl true
       def week_of_month(year, week, day) do
-        # calendar = calendar_for_date(year, week, day)
-        # calendar.week_of_month(year, week, day)
+        {:error, :not_defined}
       end
 
       @doc """
@@ -285,8 +284,8 @@ defmodule Cldr.Calendar.Composite.Compiler do
         last_month = months_in_year(year)
         days_in_last_month = days_in_month(year, last_month)
 
-        starts = Date.new(year, 1, 1, __MODULE__)
-        ends = Date.new(year, last_month, days_in_last_month)
+        {:ok, starts} = Date.new(year, 1, 1, __MODULE__)
+        {:ok, ends} = Date.new(year, last_month, days_in_last_month)
 
         Date.range(starts, ends)
       end

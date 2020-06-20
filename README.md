@@ -38,7 +38,7 @@ iex> Cldr.Calendar.Composite.new France, calendars: ~D[1582-12-20]
 A more complex example composes more than one calendar. For example, Egypt used the [Coptic calendar](https://en.wikipedia.org/wiki/Coptic_calendar) from 238 BCE until Rome introduced the Julian calendar in approximately 30 BCE. The Gregorian calendar was then introduced in 1875. Although the exact dates of introduction aren't known we can approximate the composition of calendars with:
 
 ```elixir
-defmodule Cldr.Calendar.Composite.new Egypt do
+defmodule Cldr.Calendar.Composite.Egypt do
   use Cldr.Calendar.Composite,
     calendars: [
       ~D[-0045-01-01 Cldr.Calendar.Julian],

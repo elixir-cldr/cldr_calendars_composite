@@ -42,8 +42,27 @@ defmodule Cldr.Calendar.Composite do
   reference is the [Perpetual Calendar](https://norbyhus.dk/calendar.php)
   site maintained by [Toke Nørby](mailto:Toke.Norby@Norbyhus.dk).
 
-  An additional source if [Wikipedia](https://en.wikipedia.org/wiki/Adoption_of_the_Gregorian_calendar).
+  An additional source of information is
+  [Wikipedia](https://en.wikipedia.org/wiki/Adoption_of_the_Gregorian_calendar).
 
+  ### Multiple compositions
+
+  A more complex example composes more than one calendar. For example,
+  Egypt used the [Coptic calendar](https://en.wikipedia.org/wiki/Coptic_calendar)
+  from 238 BCE until Rome introduced the Julian calendar in approximately
+  30 BCE. The Gregorian calendar was then introduced in 1875. Although the
+  exact dates of introduction aren't known we can approximate the composition
+  of calendars with:
+
+  ```elixir
+  defmodule Cldr.Calendar.Composite.Egypt do
+    use Cldr.Calendar.Composite,
+      calendars: [
+        ~D[-0045-01-01 Cldr.Calendar.Julian],
+        ~D[1875-09-01]
+      ],
+      base_calendar: Cldr.Calendar.Coptic
+  end
 
   """
 
@@ -59,20 +78,47 @@ defmodule Cldr.Calendar.Composite do
   end
 
   @doc """
+  Creates a new composite compiler.
 
+  ## Arguments
 
+  * `calendar_module` is any module name. This will be the
+    name of the composite calendar if it is successfully
+    created.
 
+  * `options` is a keyword list of options.
 
+  ## Options
+
+  * `:calendars` is a list of dates representing the first
+    new date at which a calendar is introduced. These dates
+    should be expressed in the calendar of the new period.
+
+  * `:base_calendar` is any calendar module that is used
+    as the calendar for any dates prior to the first
+    transition. The default is `Cldr.Calendar.Julian`.
+
+  ## Returns
+
+  * `{:ok, module}` or
+
+  * `{:module_already_exists, calendar_module}`
+
+  ## Examples
+
+      iex> Cldr.Calendar.Composite.new Cldr.Calendar.Denmark,
+      ...> calendars: ~D[1700-03-01 Cldr.Calendar.Gregorian]
+      {:ok, Cldr.Calendar.Denmark}
 
   """
   @spec new(module(), Keyword.t()) ::
           {:ok, Cldr.Calendar.calendar()} | {:module_already_exists, module()}
 
-  def new(calendar_module, config) when is_atom(calendar_module) and is_list(config) do
+  def new(calendar_module, options) when is_atom(calendar_module) and is_list(options) do
     if Code.ensure_loaded?(calendar_module) do
       {:module_already_exists, calendar_module}
     else
-      create_calendar(calendar_module, config)
+      create_calendar(calendar_module, options)
     end
   end
 

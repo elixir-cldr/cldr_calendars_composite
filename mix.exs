@@ -42,6 +42,7 @@ defmodule Cldr.Calendars.Composite.MixProject do
       {:ex_cldr_calendars_coptic, "~> 0.1", only: [:dev, :test]},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true},
+      {:ex_doc, "~> 0.21", only: [:release, :dev]},
     ]
   end
 
