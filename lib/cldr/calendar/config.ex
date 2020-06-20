@@ -22,8 +22,17 @@ defmodule Cldr.Calendar.Composite.Config do
 
     options
     |> Keyword.get(:calendars)
+    |> maybe_wrap
     |> List.insert_at(0, base_transition)
     |> collect_dates!
+  end
+
+  defp maybe_wrap(options) when is_list(options) do
+    options
+  end
+
+  defp maybe_wrap(options) do
+    [options]
   end
 
   @doc false

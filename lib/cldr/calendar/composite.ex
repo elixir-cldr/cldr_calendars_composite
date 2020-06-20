@@ -31,6 +31,20 @@ defmodule Cldr.Calendar.Composite do
   before any other configured calendars.  The default is
   `Cldr.Calendar.Julian`.
 
+  ### Julian to Gregorian transition
+
+  One of the uses of this calendar is to define a calendar that
+  reflects the transition from the Julian to the Gregorian calendar.
+
+  Applicable primarily to western european countries and
+  related colonies, the transition to the Gregorian calendar
+  occured between the 16th and 20th centuries. One strong
+  reference is the [Perpetual Calendar](https://norbyhus.dk/calendar.php)
+  site maintained by [Toke Nørby](mailto:Toke.Norby@Norbyhus.dk).
+
+  An additional source if [Wikipedia](https://en.wikipedia.org/wiki/Adoption_of_the_Gregorian_calendar).
+
+
   """
 
   alias Cldr.Calendar.Composite.Config

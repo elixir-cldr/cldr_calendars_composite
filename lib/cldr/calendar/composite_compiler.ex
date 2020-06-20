@@ -215,7 +215,7 @@ defmodule Cldr.Calendar.Composite.Compiler do
         starts = date_to_iso_days(year, 1, 1)
         ends = date_to_iso_days(year, months_in_year, days_in_month(year, months_in_year))
 
-        ends - starts
+        ends - starts + 1
       end
 
       @doc """
@@ -249,7 +249,7 @@ defmodule Cldr.Calendar.Composite.Compiler do
               ends =
                 date_to_iso_days(year, month, unquote(new_calendar).days_in_month(year, month))
 
-              ends - starts
+              ends - starts + 1
             end,
 
             # Months and years earlier than the transition
