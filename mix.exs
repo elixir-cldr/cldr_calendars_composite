@@ -7,7 +7,7 @@ defmodule Cldr.Calendars.Composite.MixProject do
     [
       app: :cldr_calendars_composite,
       version: @version,
-      elixir: "~> 1.8",
+      elixir: "~> 1.10",
       name: "Cldr Composite Calendars",
       source_url: "https://github.com/elixir-cldr/cldr_calendars_composite",
       docs: docs(),

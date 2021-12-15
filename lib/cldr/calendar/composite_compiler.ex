@@ -233,7 +233,8 @@ defmodule Cldr.Calendar.Composite.Compiler do
 
       """
       if Code.ensure_loaded?(Date) and function_exported?(Date, :day_of_week, 2) do
-        @spec day_of_week(year, month, day, :default) :: 1..7
+        @spec day_of_week(year, month, day, :default) ::
+          {Calendar.day_of_week(), first_day_of_week :: non_neg_integer(), last_day_of_week :: non_neg_integer()}
         @impl true
         def day_of_week(year, month, day, :default) do
           calendar = calendar_for_date(year, month, day)
