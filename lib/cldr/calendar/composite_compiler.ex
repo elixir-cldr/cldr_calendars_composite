@@ -92,11 +92,58 @@ defmodule Cldr.Calendar.Composite.Compiler do
       in effect on the first day of the year.
 
       """
-      @spec year_of_era(year) :: {year, era :: non_neg_integer}
+      @spec year_of_era(year, month, day) :: {year, era :: non_neg_integer}
       @impl true
-      def year_of_era(year) do
-        calendar = calendar_for_date(year, 1, 1)
+      def year_of_era(year, month, day) do
+        calendar = calendar_for_date(year, month, day)
         calendar.year_of_era(year)
+      end
+
+      @doc """
+      Returns the calendar year as displayed
+      on rendered calendars.
+
+      """
+      @spec calendar_year(Calendar.year, Calendar.month, Calendar.day) :: Calendar.year()
+      @impl true
+      def calendar_year(year, month, day) do
+        year
+      end
+
+      @doc """
+      Returns the related gregorain year as displayed
+      on rendered calendars.
+
+      """
+      @spec related_gregorian_year(Calendar.year, Calendar.month, Calendar.day) :: Calendar.year()
+
+      @impl true
+      def related_gregorian_year(year, month, day) do
+        year
+      end
+
+      @doc """
+      Returns the extended year as displayed
+      on rendered calendars.
+
+      """
+      @spec extended_year(Calendar.year, Calendar.month, Calendar.day) :: Calendar.year()
+
+      @impl true
+      def extended_year(year, month, day) do
+        year
+      end
+
+      @doc """
+      Returns the cyclic year as displayed
+      on rendered calendars.
+
+      """
+      @spec cyclic_year(Calendar.year, Calendar.month, Calendar.day) :: Calendar.year()
+
+      @impl true
+      def cyclic_year(year, month, day) do
+        year
       end
 
       @doc """
