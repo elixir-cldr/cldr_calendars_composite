@@ -38,7 +38,7 @@ defmodule Cldr.Calendar.Composite do
 
   Applicable primarily to western european countries and
   related colonies, the transition to the Gregorian calendar
-  occured between the 16th and 20th centuries. One strong
+  occurred between the 16th and 20th centuries. One strong
   reference is the [Perpetual Calendar](https://norbyhus.dk/calendar.php)
   site maintained by [Toke Nørby](mailto:Toke.Norby@Norbyhus.dk).
 

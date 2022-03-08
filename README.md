@@ -20,7 +20,7 @@ defmodule England do
 end
 ```
 
-This configuration states that September 14th, 1752 is the first day in the Gregorian calendar. The `:base_calendar` defines the calendar in use before any other composed calendar.  Since `Cldr.Calendar.Julian` is the default `:base_calendar`, this option may be ommitted resulting in the following configuration:
+This configuration states that September 14th, 1752 is the first day in the Gregorian calendar. The `:base_calendar` defines the calendar in use before any other composed calendar.  Since `Cldr.Calendar.Julian` is the default `:base_calendar`, this option may be omitted resulting in the following configuration:
 
 ```elixir
 defmodule England do
