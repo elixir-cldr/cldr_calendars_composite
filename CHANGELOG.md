@@ -1,8 +1,18 @@
 # Changelog
 
+## Cldr Calendars Composite  v1.0.0
+
+This is the changelog for Cldr Calendars Composite Calendars Composite v1.0.0 released on April 28th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
+
+** Note that `ex_cldr_calendars_composite` is support on Elixir 1.10 and later only.
+
+### Bug Fixes
+
+* Add required `days_in_month/1` callback.
+
 ## Cldr Calendars Composite  v0.3.0
 
-This is the changelog for Cldr v0.2.0 released on December 16th, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
+This is the changelog for Cldr Calendars Composite v0.2.0 released on December 16th, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
 
 ** Note that `ex_cldr_calendars_composite` is support on Elixir 1.10 and later only.
 
@@ -12,7 +22,7 @@ This is the changelog for Cldr v0.2.0 released on December 16th, 2021.  For olde
 
 ## Cldr Calendars Composite  v0.2.0
 
-This is the changelog for Cldr v0.2.0 released on May 22nd, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
+This is the changelog for Cldr Calendars Composite v0.2.0 released on May 22nd, 2021.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
 
 ### Bug Fixes
 
@@ -20,7 +30,7 @@ This is the changelog for Cldr v0.2.0 released on May 22nd, 2021.  For older cha
 
 ## Cldr Calendars Composite  v0.1.0
 
-This is the changelog for Cldr v0.1.0 released on June 20th, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
+This is the changelog for Cldr Calendars Composite v0.1.0 released on June 20th, 2020.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
 
 ### Enhancements
 
