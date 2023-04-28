@@ -63,6 +63,7 @@ defmodule Cldr.Calendar.Composite do
       ],
       base_calendar: Cldr.Calendar.Coptic
   end
+  ```
 
   """
 
