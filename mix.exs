@@ -5,7 +5,7 @@ defmodule Cldr.Calendars.Composite.MixProject do
 
   def project do
     [
-      app: :cldr_calendars_composite,
+      app: :ex_cldr_calendars_composite,
       version: @version,
       elixir: "~> 1.10",
       name: "Cldr Composite Calendars",
