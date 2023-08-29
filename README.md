@@ -55,7 +55,7 @@ Add `cldr_calendars_composite` to your list of dependencies in `mix.exs`.
 ```elixir
 def deps do
   [
-    {:cldr_calendars_composite, "~> 0.1.0"}
+    {:cldr_calendars_composite, "~> 1.0.0"}
   ]
 end
 ```
