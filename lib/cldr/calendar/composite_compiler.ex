@@ -535,30 +535,6 @@ defmodule Cldr.Calendar.Composite.Compiler do
         end
       end
 
-      # @doc """
-      # Returns the number of `iso_days` that is
-      # the first day of the given
-      # year for this calendar.
-      #
-      # """
-      # for {_iso_days, y, _m, _d, calendar} <- reverse do
-      #   def first_gregorian_day_of_year(year) when year > unquote(y) do
-      #     unquote(calendar).first_gregorian_day_of_year(year)
-      #   end
-      # end
-      #
-      # @doc """
-      # Returns the number of `iso_days` that is
-      # the last day of the given
-      # year for this calendar.
-      #
-      # """
-      # for {_iso_days, y, _m, _d, calendar} <- reverse do
-      #   def last_gregorian_day_of_year(year) when year >= unquote(y) do
-      #     unquote(calendar).last_gregorian_day_of_year(year)
-      #   end
-      # end
-
       @doc """
       Returns the `t:Calendar.iso_days/0` format of the specified date.
 
@@ -663,27 +639,44 @@ defmodule Cldr.Calendar.Composite.Compiler do
         Cldr.Calendar.Parse.parse_naive_datetime(string, __MODULE__)
       end
 
-      if Version.match?(System.version(), ">= 1.10.0-dev") do
+       if Code.ensure_loaded?(Calendar.ISO) && function_exported?(Calendar.ISO, :parse_time, 1) do
         @doc false
+        @impl Calendar
         defdelegate parse_time(string), to: Calendar.ISO
       end
 
+      if Code.ensure_loaded?(Calendar.ISO) && function_exported?(Calendar.ISO, :iso_days_to_beginning_of_day, 1) do
+        @doc false
+        @impl Calendar
+        defdelegate iso_days_to_beginning_of_day(iso_days), to: Calendar.ISO
+
+        @doc false
+        @impl Calendar
+        defdelegate iso_days_to_end_of_day(iso_days), to: Calendar.ISO
+      end
+
       @doc false
+      @impl Calendar
       defdelegate day_rollover_relative_to_midnight_utc, to: Calendar.ISO
 
       @doc false
+      @impl Calendar
       defdelegate months_in_year(year), to: Calendar.ISO
 
       @doc false
+      @impl Calendar
       defdelegate time_from_day_fraction(day_fraction), to: Calendar.ISO
 
       @doc false
+      @impl Calendar
       defdelegate time_to_day_fraction(hour, minute, second, microsecond), to: Calendar.ISO
 
       @doc false
+      @impl Calendar
       defdelegate time_to_string(hour, minute, second, microsecond), to: Calendar.ISO
 
       @doc false
+      @impl Calendar
       defdelegate valid_time?(hour, minute, second, microsecond), to: Calendar.ISO
     end
   end
