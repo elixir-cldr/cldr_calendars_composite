@@ -50,15 +50,15 @@ end
 
 ## Installation
 
-Add `cldr_calendars_composite` to your list of dependencies in `mix.exs`.
+Add `ex_cldr_calendars_composite` to your list of dependencies in `mix.exs`.
 
 ```elixir
 def deps do
   [
-    {:cldr_calendars_composite, "~> 0.1.0"}
+    {:ex_cldr_calendars_composite, "~> 1.0"}
   ]
 end
 ```
 
-Documentation is published at [https://hexdocs.pm/cldr_calendars_composite](https://hexdocs.pm/cldr_calendars_composite).
+Documentation is published at [https://hexdocs.pm/ex_cldr_calendars_composite](https://hexdocs.pm/ex_cldr_calendars_composite).
 
