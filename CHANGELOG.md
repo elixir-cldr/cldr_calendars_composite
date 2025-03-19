@@ -4,7 +4,7 @@
 
 ## Cldr Calendars Composite  v1.1.0
 
-This is the changelog for Cldr Calendars Composite v1.1.0 released on September 6th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
+This is the changelog for Cldr Calendars Composite v1.1.0 released on March 19th, 2025.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
 
 ### Bug Fixes
 
