@@ -1,13 +1,13 @@
 defmodule Cldr.Calendars.Composite.MixProject do
   use Mix.Project
 
-  @version "1.0.1"
+  @version "1.1.0"
 
   def project do
     [
       app: :ex_cldr_calendars_composite,
       version: @version,
-      elixir: "~> 1.11",
+      elixir: "~> 1.12",
       name: "Cldr Composite Calendars",
       source_url: "https://github.com/elixir-cldr/cldr_calendars_composite",
       docs: docs(),
@@ -38,7 +38,7 @@ defmodule Cldr.Calendars.Composite.MixProject do
 
   defp deps do
     [
-      {:ex_cldr_calendars, "~> 1.17"},
+      {:ex_cldr_calendars, "~> 2.1"},
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true},
       {:ex_doc, "~> 0.21", only: [:release, :dev]},

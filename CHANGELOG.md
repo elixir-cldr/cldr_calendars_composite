@@ -1,10 +1,22 @@
 # Changelog
 
+** Note that `ex_cldr_calendars_composite` v1.1.0 and later is supported on Elixir 1.12 and later only.
+
+## Cldr Calendars Composite  v1.1.0
+
+This is the changelog for Cldr Calendars Composite v1.1.0 released on September 6th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
+
+### Bug Fixes
+
+* Implement `Calendar.shift_*` callbacks if the host Elixir supports them.
+
+### Enhancements
+
+* Use `ex_cldr_calendars` version 2.x
+
 ## Cldr Calendars Composite  v1.0.1
 
-This is the changelog for Cldr Calendars Composite Calendars Composite v1.0.1 released on September 6th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
-
-** Note that `ex_cldr_calendars_composite` v1.0.1 and later is supported on Elixir 1.11 and later only.
+This is the changelog for Cldr Calendars Composite v1.0.1 released on September 6th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
 
 ### Bug Fixes
 
@@ -12,7 +24,7 @@ This is the changelog for Cldr Calendars Composite Calendars Composite v1.0.1 re
 
 ## Cldr Calendars Composite  v1.0.0
 
-This is the changelog for Cldr Calendars Composite Calendars Composite v1.0.0 released on April 28th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
+This is the changelog for Cldr Calendars Composite v1.0.0 released on April 28th, 2023.  For older changelogs please consult the release tag on [GitHub](https://github.com/elixir-cldr/cldr_calendars_composite/tags)
 
 ** Note that `ex_cldr_calendars_composite` is supported on Elixir 1.10 and later only.
 

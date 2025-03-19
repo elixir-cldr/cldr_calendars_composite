@@ -232,21 +232,12 @@ defmodule Cldr.Calendar.Composite.Compiler do
       It is an integer from 1 to 7, where 1 is Monday and 7 is Sunday.
 
       """
-      if Code.ensure_loaded?(Date) and function_exported?(Date, :day_of_week, 2) do
-        @spec day_of_week(year, month, day, :default) ::
-          {Calendar.day_of_week(), first_day_of_week :: non_neg_integer(), last_day_of_week :: non_neg_integer()}
-        @impl true
-        def day_of_week(year, month, day, :default) do
-          calendar = calendar_for_date(year, month, day)
-          calendar.day_of_week(year, month, day)
-        end
-      else
-        @spec day_of_week(year, month, day) :: 1..7
-        @impl true
-        def day_of_week(year, month, day) do
-          calendar = calendar_for_date(year, month, day)
-          calendar.day_of_week(year, month, day)
-        end
+      @spec day_of_week(year, month, day, :default) ::
+        {Calendar.day_of_week(), first_day_of_week :: non_neg_integer(), last_day_of_week :: non_neg_integer()}
+      @impl true
+      def day_of_week(year, month, day, :default) do
+        calendar = calendar_for_date(year, month, day)
+        calendar.day_of_week(year, month, day, :default)
       end
 
       @doc """
@@ -639,7 +630,21 @@ defmodule Cldr.Calendar.Composite.Compiler do
         Cldr.Calendar.Parse.parse_naive_datetime(string, __MODULE__)
       end
 
-       if Code.ensure_loaded?(Calendar.ISO) && function_exported?(Calendar.ISO, :parse_time, 1) do
+      if Code.ensure_loaded?(Calendar.ISO) && function_exported?(Calendar.ISO, :shift_date, 4) do
+        @doc false
+        @impl Calendar
+        defdelegate shift_date(year, month, day, duration), to: Calendar.ISO
+
+        @doc false
+        @impl Calendar
+        defdelegate shift_time(hour, minute, second, microsecond, duration), to: Calendar.ISO
+
+        @doc false
+        @impl Calendar
+        defdelegate shift_naive_datetime(year, month, day, hour, minute, second, microsecond, duration), to: Calendar.ISO
+      end
+
+      if Code.ensure_loaded?(Calendar.ISO) && function_exported?(Calendar.ISO, :parse_time, 1) do
         @doc false
         @impl Calendar
         defdelegate parse_time(string), to: Calendar.ISO
