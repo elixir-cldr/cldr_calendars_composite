@@ -260,9 +260,9 @@ defmodule Cldr.Calendar.Composite.Compiler do
       def days_in_year(year) do
         months_in_year = months_in_year(year)
         starts = date_to_iso_days(year, 1, 1)
-        ends = date_to_iso_days(year, months_in_year, days_in_month(year, months_in_year))
+        ends = date_to_iso_days(year + 1, 1, 1)
 
-        ends - starts + 1
+        ends - starts
       end
 
       @doc """
@@ -301,8 +301,7 @@ defmodule Cldr.Calendar.Composite.Compiler do
 
             # Months and years earlier than the transition
             def days_in_month(year, month)
-                when (year == unquote(old_year) and month >= unquote(old_month)) or
-                       year >= unquote(old_year) do
+                when (year == unquote(old_year) and month >= unquote(old_month)) do
               unquote(old_calendar).days_in_month(year, month)
             end
           ]
@@ -386,17 +385,19 @@ defmodule Cldr.Calendar.Composite.Compiler do
           [
             def month(year, month)
                 when year == unquote(new_year) and month == unquote(new_month) do
-              last_day = unquote(new_calendar).days_in_month(year, month)
               {:ok, starts} = Date.new(year, month, 1, __MODULE__)
-              {:ok, ends} = Date.new(year, month, last_day, __MODULE__)
+
+              {year, month} = __MODULE__.following_year_and_month(year, month)
+              ending_iso_days = __MODULE__.date_to_iso_days(year, month, 1) - 1
+              {year, month, day} = __MODULE__.date_from_iso_days(ending_iso_days) |> IO.inspect
+              {:ok, ends} = Date.new(year, month, day, __MODULE__)
 
               Date.range(starts, ends)
             end,
 
             # Months and years earlier than the transition
             def month(year, month)
-                when (year == unquote(old_year) and month >= unquote(old_month)) or
-                       year >= unquote(old_year) do
+                when (year == unquote(old_year) and month >= unquote(old_month))  do
               unquote(old_calendar).month(year, month)
             end
           ]
@@ -407,6 +408,14 @@ defmodule Cldr.Calendar.Composite.Compiler do
             unquote(calendar).month(year, month)
           end
       end)
+
+      def following_year_and_month(year, month) do
+        if month < months_in_year(year) do
+          {year, month + 1}
+        else
+          {year + 1, 1}
+        end
+      end
 
       @doc """
       Returns a `Date.Range.t` representing
@@ -630,11 +639,72 @@ defmodule Cldr.Calendar.Composite.Compiler do
         Cldr.Calendar.Parse.parse_naive_datetime(string, __MODULE__)
       end
 
-      if Code.ensure_loaded?(Calendar.ISO) && function_exported?(Calendar.ISO, :shift_date, 4) do
-        @doc false
-        @impl Calendar
-        defdelegate shift_date(year, month, day, duration), to: Calendar.ISO
+      @impl true
+      @spec shift_date(year, month, day, Duration.t()) :: {year, month, day}
+      def shift_date(year, month, day, duration) do
+        shift_options = shift_date_options(duration)
 
+        Enum.reduce(shift_options, {year, month, day}, fn
+          {_, 0}, date ->
+            date
+
+          {:month, value}, date ->
+            shift_months(date, value)
+
+          {:day, value}, date ->
+            shift_days(date, value)
+        end)
+      end
+
+      @doc false
+      def shift_days({year, month, day}, days) do
+        {year, month, day} =
+          date_to_iso_days(year, month, day)
+          |> Kernel.+(days)
+          |> date_from_iso_days()
+
+        {year, month, day}
+      end
+
+      defp shift_months({year, month, day}, months) do
+        months_in_year = months_in_year(year)
+        total_months = year * months_in_year + month + months - 1
+
+        new_year = Integer.floor_div(total_months, months_in_year)
+
+        new_month =
+          case rem(total_months, months_in_year) + 1 do
+            new_month when new_month < 1 -> new_month + months_in_year
+            new_month -> new_month
+          end
+
+        new_day = min(day, days_in_month(new_year, new_month))
+
+        {new_year, new_month, new_day}
+      end
+
+      defp shift_date_options(%Duration{
+             year: year,
+             month: month,
+             week: week,
+             day: day,
+             hour: 0,
+             minute: 0,
+             second: 0,
+             microsecond: {0, _precision}
+           }) do
+        [
+          month: year * 12 + month,
+          day: week * 7 + day
+        ]
+      end
+
+      defp shift_date_options(_duration) do
+        raise ArgumentError,
+              "cannot shift date by time scale unit. Expected :year, :month, :week, :day"
+      end
+
+      if Code.ensure_loaded?(Calendar.ISO) && function_exported?(Calendar.ISO, :shift_date, 4) do
         @doc false
         @impl Calendar
         defdelegate shift_time(hour, minute, second, microsecond, duration), to: Calendar.ISO

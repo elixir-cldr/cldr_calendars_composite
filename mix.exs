@@ -38,7 +38,9 @@ defmodule Cldr.Calendars.Composite.MixProject do
 
   defp deps do
     [
-      {:ex_cldr_calendars, "~> 2.1"},
+      # {:ex_cldr_calendars, "~> 2.1"},
+      {:ex_cldr_calendars, path: "../cldr_calendars"},
+
       {:jason, "~> 1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false, optional: true},
       {:ex_doc, "~> 0.21", only: [:release, :dev]},

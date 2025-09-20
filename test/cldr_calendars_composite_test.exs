@@ -2,24 +2,21 @@ defmodule Cldr.Calendar.Composite.Test do
   use ExUnit.Case
   doctest Cldr.Calendar.Composite
 
-  defmodule England do
-    use Cldr.Calendar.Composite,
-      calendars: ~D[1752-09-14]
-  end
+  alias Cldr.Calendar.England
 
   test "The English calendar has 18 days in September 1752" do
     assert England.days_in_month(1752, 9) == 19
   end
 
-  test "The English calendar has 354 days in 1752" do
+  test "The English calendar has 355 days in 1752" do
     assert England.days_in_year(1752) == 355
   end
 
-  test "The English calendar has 354 days in 1751" do
+  test "The English calendar has 365 days in 1751" do
     assert England.days_in_year(1751) == 365
   end
 
-  test "The English calendar has 354 days in 1753" do
+  test "The English calendar has 365 days in 1753" do
     assert England.days_in_year(1753) == 365
   end
 
@@ -37,5 +34,10 @@ defmodule Cldr.Calendar.Composite.Test do
     for d <- 20..30 do
       refute England.valid_date?(1752, 9, d)
     end
+  end
+
+  test "That 11 days are 'missing' at the transition" do
+    last_date_of_old_style = ~D[1752-09-02 Cldr.Calendar.England]
+    assert ~D[1752-09-14 Cldr.Calendar.England] == Date.shift(last_date_of_old_style, day: 1)
   end
 end
