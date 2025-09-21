@@ -17,4 +17,5 @@ defmodule Cldr.Calendar.Russia do
       ~D[1918-02-14 Cldr.Calendar.Gregorian]
     ],
     base_calendar: Cldr.Calendar.Julian.March1
+
 end
