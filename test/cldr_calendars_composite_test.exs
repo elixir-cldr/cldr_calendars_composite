@@ -4,7 +4,7 @@ defmodule Cldr.Calendar.Composite.Test do
 
   alias Cldr.Calendar.England
 
-  test "The English calendar has 18 days in September 1752" do
+  test "The English calendar has 19 days in September 1752" do
     assert England.days_in_month(1752, 9) == 19
   end
 
@@ -24,14 +24,18 @@ defmodule Cldr.Calendar.Composite.Test do
     assert Cldr.Calendar.England.leap_year?(1752) == true
   end
 
-  test "Valid dates in September 1752 beyond for 1st to 18th" do
-    for d <- 1..19 do
+  test "Valid dates in September 1752 1..2 and 14..30" do
+    for d <- 1..2 do
+      assert England.valid_date?(1752, 9, d)
+    end
+
+    for d <- 14..30 do
       assert England.valid_date?(1752, 9, d)
     end
   end
 
-  test "No valid dates in September 1752 beyond the 18th" do
-    for d <- 20..30 do
+  test "No valid dates in September 1752 from 3 to 13th" do
+    for d <- 3..13 do
       refute England.valid_date?(1752, 9, d)
     end
   end

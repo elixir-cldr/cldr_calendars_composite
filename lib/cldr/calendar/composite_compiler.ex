@@ -70,15 +70,32 @@ defmodule Cldr.Calendar.Composite.Compiler do
       end
 
       @doc """
+      Identify the base calendar for a given iso_days.
+
+      This function derives the calendar we delegate
+      to for a given date based upon the configuration.
+
+      """
+      for {iso_days, _y, _m, _d, calendar} <- reverse do
+        def calendar_for_iso_days(iso_days) when iso_days >= unquote(iso_days) do
+          unquote(calendar)
+        end
+      end
+
+      @doc """
       Determines if the date given is valid according to this calendar.
 
       """
       @impl true
       def valid_date?(year, month, day) do
-        months_in_year = months_in_year(year)
-        days_in_month = days_in_month(year, month)
+        calendar = calendar_for_date(year, month, day)
 
-        year in -9999..9999 and month in 1..months_in_year && day in 1..days_in_month
+        if calendar.valid_date?(year, month, day) do
+          iso_days = calendar.date_to_iso_days(year, month, day)
+          calendar_for_iso_days(iso_days) == calendar
+        else
+          false
+        end
       end
 
       @doc """
@@ -288,7 +305,7 @@ defmodule Cldr.Calendar.Composite.Compiler do
       define_transition_functions(config, fn
         # Transitions from one calendar to another
         {_, old_year, old_month, _, old_calendar}, [{_, new_year, new_month, _, new_calendar} | _] ->
-          [
+
             def days_in_month(year, month)
                 when year == unquote(new_year) and month == unquote(new_month) do
               starts = date_to_iso_days(year, month, 1)
@@ -297,14 +314,14 @@ defmodule Cldr.Calendar.Composite.Compiler do
                 date_to_iso_days(year, month, unquote(new_calendar).days_in_month(year, month))
 
               ends - starts + 1
-            end,
+            end
 
             # Months and years earlier than the transition
             def days_in_month(year, month)
                 when (year == unquote(old_year) and month >= unquote(old_month)) do
               unquote(old_calendar).days_in_month(year, month)
             end
-          ]
+
 
         # All other months after the final transition
         {_, _, _, _, calendar}, [] ->
@@ -342,11 +359,9 @@ defmodule Cldr.Calendar.Composite.Compiler do
       """
       @impl true
       def year(year) do
-        last_month = months_in_year(year)
-        days_in_last_month = days_in_month(year, last_month)
-
         {:ok, starts} = Date.new(year, 1, 1, __MODULE__)
-        {:ok, ends} = Date.new(year, last_month, days_in_last_month)
+        {:ok, new_year} = Date.new(year + 1, 1, 1, __MODULE__)
+        ends = Date.shift(new_year, day: -1)
 
         Date.range(starts, ends)
       end

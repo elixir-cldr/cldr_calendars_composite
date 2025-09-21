@@ -87,8 +87,7 @@ defmodule Cldr.Calendar.Composite.Config do
   def define_transition_functions(list, fun) do
     Cldr.Enum.reduce_peeking(list, [], fn head, tail, acc ->
       result = fun.(head, tail)
-      if is_list(result), do: result, else: [result]
-      {:cont, acc ++ result}
+      {:cont, acc ++ List.wrap(result)}
     end)
   end
 end
