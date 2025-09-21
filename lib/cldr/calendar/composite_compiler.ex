@@ -113,7 +113,7 @@ defmodule Cldr.Calendar.Composite.Compiler do
       @impl true
       def year_of_era(year, month, day) do
         calendar = calendar_for_date(year, month, day)
-        calendar.year_of_era(year)
+        calendar.year_of_era(year, month, day)
       end
 
       @doc """
