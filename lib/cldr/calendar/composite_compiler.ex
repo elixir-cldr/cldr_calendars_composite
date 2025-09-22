@@ -91,7 +91,7 @@ defmodule Cldr.Calendar.Composite.Compiler do
         calendar = calendar_for_date(year, month, day)
 
         if calendar.valid_date?(year, month, day) do
-          iso_days = calendar.date_to_iso_days(year, month, day)
+          iso_days = date_to_iso_days(year, month, day)
           calendar_for_iso_days(iso_days) == calendar
         else
           false
@@ -356,6 +356,13 @@ defmodule Cldr.Calendar.Composite.Compiler do
       Returns a `Date.Range.t` representing
       a given year.
 
+      If the year is wholly within one calendar then
+      that is the range. Note that the range may not
+      start on Jan 1st nor end on December 31st.
+
+      FIXME the code below assumes a year starts Jan 1
+      which is incorrect.
+
       """
       @impl true
       def year(year) do
@@ -393,37 +400,18 @@ defmodule Cldr.Calendar.Composite.Compiler do
       """
 
       @impl true
-      define_transition_functions(config, fn
-        # Transitions from one calendar to another
-        {_, old_year, old_month, _, old_calendar}, [{_, new_year, new_month, _, new_calendar} | _] ->
-          # Month of transition
-          [
-            def month(year, month)
-                when year == unquote(new_year) and month == unquote(new_month) do
-              {:ok, starts} = Date.new(year, month, 1, __MODULE__)
+      def month(year, month) do
+        {:ok, starts} = Date.new(year, month, 1, __MODULE__)
 
-              {year, month} = __MODULE__.following_year_and_month(year, month)
-              ending_iso_days = __MODULE__.date_to_iso_days(year, month, 1) - 1
-              {year, month, day} = __MODULE__.date_from_iso_days(ending_iso_days) |> IO.inspect
-              {:ok, ends} = Date.new(year, month, day, __MODULE__)
+        {year, month} = __MODULE__.following_year_and_month(year, month)
+        ending_iso_days = __MODULE__.date_to_iso_days(year, month, 1) - 1
+        {year, month, day} = __MODULE__.date_from_iso_days(ending_iso_days)
+        {:ok, ends} = Date.new(year, month, day, __MODULE__)
 
-              Date.range(starts, ends)
-            end,
+        Date.range(starts, ends)
+      end
 
-            # Months and years earlier than the transition
-            def month(year, month)
-                when (year == unquote(old_year) and month >= unquote(old_month))  do
-              unquote(old_calendar).month(year, month)
-            end
-          ]
-
-        # All other months after the final transition
-        {_, _, _, _, calendar}, [] ->
-          def month(year, month) do
-            unquote(calendar).month(year, month)
-          end
-      end)
-
+      @doc false
       def following_year_and_month(year, month) do
         if month < months_in_year(year) do
           {year, month + 1}

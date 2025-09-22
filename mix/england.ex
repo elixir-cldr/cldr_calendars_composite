@@ -6,6 +6,11 @@ defmodule Cldr.Calendar.England do
 
     https://libguides.ctstatelibrary.org/hg/colonialresearch/calendar
     https://en.wikipedia.org/wiki/Julian_calendar
+    https://www.amazon.com.au/Handbook-Dates-Students-British-History/dp/052177845X
+
+  Tax Year:
+
+    https://www.taxadvisorypartnership.com/tax-compliance/why-does-the-uk-tax-year-start-on-6-april-each-year#:~:text=The%20Treasury%2C%20never%20one%20to,25%20March%20to%205%20April.
 
   Shakespeare:
 

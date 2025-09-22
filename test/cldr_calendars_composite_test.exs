@@ -8,12 +8,12 @@ defmodule Cldr.Calendar.Composite.Test do
     assert England.days_in_month(1752, 9) == 19
   end
 
-  test "The English calendar has 355 days in 1752" do
-    assert England.days_in_year(1752) == 355
-  end
-
   test "The English calendar has 365 days in 1751" do
     assert England.days_in_year(1751) == 365
+  end
+
+  test "The English calendar has 355 days in 1752" do
+    assert England.days_in_year(1752) == 355
   end
 
   test "The English calendar has 365 days in 1753" do
