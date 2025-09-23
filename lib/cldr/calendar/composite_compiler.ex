@@ -69,6 +69,10 @@ defmodule Cldr.Calendar.Composite.Compiler do
         end
       end
 
+      def calendar_for_date(%{year: year, month: month, day: day, calendar: __MODULE__}) do
+        calendar_for_date(year, month, day)
+      end
+
       @doc """
       Identify the base calendar for a given iso_days.
 
@@ -361,16 +365,47 @@ defmodule Cldr.Calendar.Composite.Compiler do
       start on Jan 1st nor end on December 31st.
 
       FIXME the code below assumes a year starts Jan 1
-      which is incorrect.
+      which is incorrect. Alhtough pragmatically perhaps
+      thats what we should do for a composite calendar?
 
       """
       @impl true
       def year(year) do
-        {:ok, starts} = Date.new(year, 1, 1, __MODULE__)
-        {:ok, new_year} = Date.new(year + 1, 1, 1, __MODULE__)
-        ends = Date.shift(new_year, day: -1)
+        with {:ok, starts} <- Date.new(year, 1, 1, __MODULE__),
+             {:ok, new_year} <- Date.new(year + 1, 1, 1, __MODULE__) do
+          ends = Date.shift(new_year, day: -1)
+          Date.range(starts, ends, 1)
+        end
+      end
 
-        Date.range(starts, ends)
+      @doc """
+      Given the nature of composite calendars there can
+      be gaps in the sequence of months/days.
+
+      For example, in Cldr.Calendar.England, the sequence goes
+      ~D[1750-03-24] to ~D[1751-03-25] because the start of
+      year was changed from March 25th.
+
+      This horrible approach is just to get a demo up
+      and running.
+
+      """
+      def first_day_of_year(year) do
+        starting_day = date_to_iso_days(year - 1, 12, 31) + 1
+        last_possible = starting_day + 366
+
+        Enum.reduce_while(starting_day..last_possible//1, {:error, :no_day_in_year}, fn day, acc ->
+          {year, month, day} = date_from_iso_days(day)
+          if valid_date?(year, month, day) do
+            {:halt, {year, month, day}}
+          else
+            {:cont, acc}
+          end
+        end)
+      end
+
+      def last_day_of_year(year) do
+
       end
 
       @doc """
@@ -475,6 +510,11 @@ defmodule Cldr.Calendar.Composite.Compiler do
       def plus(year, month, day, :months, months, options) do
         calendar = calendar_for_date(year, month, day)
         calendar.plus(year, month, day, :months, months, options)
+      end
+
+      def plus(year, month, day, :days, days, options) do
+        calendar = calendar_for_date(year, month, day)
+        calendar.plus(year, month, day, :days, days, options)
       end
 
       @doc """

@@ -1,5 +1,5 @@
 defmodule Cldr.Calendar.Composite.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Cldr.Calendar.Composite
 
   alias Cldr.Calendar.England
