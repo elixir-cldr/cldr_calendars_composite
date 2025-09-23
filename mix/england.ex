@@ -4,6 +4,7 @@ defmodule Cldr.Calendar.England do
 
   See:
 
+    https://www.legislation.gov.uk/apgb/Geo2/24/23#commentary-c918471
     https://libguides.ctstatelibrary.org/hg/colonialresearch/calendar
     https://en.wikipedia.org/wiki/Julian_calendar
     https://www.amazon.com.au/Handbook-Dates-Students-British-History/dp/052177845X

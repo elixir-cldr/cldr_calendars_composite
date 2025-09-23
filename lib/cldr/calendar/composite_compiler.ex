@@ -544,6 +544,9 @@ defmodule Cldr.Calendar.Composite.Compiler do
       The result is in the context of the calendar
       in effect on the first day of the year.
 
+      FIXME Not all calendars start on January 1st. Therefore
+      the leap year is the year that includes February.
+
       """
       @spec leap_year?(year) :: boolean()
       @impl true
