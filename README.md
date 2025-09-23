@@ -31,7 +31,7 @@ end
 
 It is also possible to define new composite calendars at runtime as well:
 ```elixir
-iex> Cldr.Calendar.Composite.new France, calendars: ~D[1582-12-20]
+iex> Cldr.Calendar.Composite.new(France, calendars: ~D[1582-12-20])
 {:ok, France}
 ```
 
