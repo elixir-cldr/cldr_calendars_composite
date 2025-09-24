@@ -73,6 +73,12 @@ defmodule Cldr.Calendar.Composite.Compiler do
         calendar_for_date(year, month, day)
       end
 
+      def calendar_for_date(%{year: _year, month: _month, day: _day, calendar: _calendar} = date) do
+        date
+        |> Date.convert!(__MODULE__)
+        |> calendar_for_date()
+      end
+
       @doc """
       Identify the base calendar for a given iso_days.
 
@@ -360,13 +366,11 @@ defmodule Cldr.Calendar.Composite.Compiler do
       Returns a `Date.Range.t` representing
       a given year.
 
-      If the year is wholly within one calendar then
-      that is the range. Note that the range may not
-      start on Jan 1st nor end on December 31st.
+      In a composite calendar, years are defined to start
+      on Jan 1 (or the first valid date after that).
 
-      FIXME the code below assumes a year starts Jan 1
-      which is incorrect. Alhtough pragmatically perhaps
-      thats what we should do for a composite calendar?
+      This may not be ideal in all cases and is
+      subject to review.
 
       """
       @impl true
@@ -374,7 +378,7 @@ defmodule Cldr.Calendar.Composite.Compiler do
         with {:ok, starts} <- Date.new(year, 1, 1, __MODULE__),
              {:ok, new_year} <- Date.new(year + 1, 1, 1, __MODULE__) do
           ends = Date.shift(new_year, day: -1)
-          Date.range(starts, ends, 1)
+          Date.range(starts, ends)
         end
       end
 
@@ -384,19 +388,20 @@ defmodule Cldr.Calendar.Composite.Compiler do
 
       For example, in Cldr.Calendar.England, the sequence goes
       ~D[1750-03-24] to ~D[1751-03-25] because the start of
-      year was changed from March 25th.
+      year was changed from March 25th to January 1st.
 
       This horrible approach is just to get a demo up
       and running.
 
       """
       def first_day_of_year(year) do
-        starting_day = date_to_iso_days(year - 1, 12, 31) + 1
+        starting_day = date_to_iso_days(year,1,1)
+        starting_calendar = calendar_for_date(year, 1, 1)
         last_possible = starting_day + 366
 
-        Enum.reduce_while(starting_day..last_possible//1, {:error, :no_day_in_year}, fn day, acc ->
+        Enum.reduce_while(starting_day..last_possible//1, {:error, :invalid_date}, fn day, acc ->
           {year, month, day} = date_from_iso_days(day)
-          if valid_date?(year, month, day) do
+          if valid_date?(year, month, day) && calendar_for_date(year, month, day) == starting_calendar do
             {:halt, {year, month, day}}
           else
             {:cont, acc}
@@ -568,6 +573,16 @@ defmodule Cldr.Calendar.Composite.Compiler do
                    (year >= unquote(y) and month >= unquote(m) and day >= unquote(d)) do
           unquote(calendar).date_to_iso_days(year, month, day)
         end
+      end
+
+      def date_to_iso_days(%{year: year, month: month, day: day, calendar: __MODULE__}) do
+        date_to_iso_days(year, month, day)
+      end
+
+      def date_to_iso_days(%{calendar: calendar} = date) do
+        date
+        |> Date.convert!(__MODULE__)
+        |> date_to_iso_days()
       end
 
       @doc """
